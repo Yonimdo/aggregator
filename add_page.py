@@ -3,6 +3,7 @@
 Usage:
   add_page name <name>
   add_page -h | --help
+  add_page --update-all
   add_page --version
   add_page --reset
 
@@ -67,16 +68,28 @@ def insert_update_page(o, url="", check=False):
             assert count >= 0
             count -= 1
 
+
+def update_page_by_name(name):
+    url = URL.format(name)
+    o = get_facebook_o(url)
+    if o:
+        insert_update_page(o, url, check=True)
+        return True
+    return False
+
+
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='add_page 1.0')
     if arguments['--reset']:
         client = pymongo.MongoClient()
         db = client.get_database(secret.DB)
         db.drop_collection(secret.PAGES)
+    if arguments['--update-all']:
+        client = pymongo.MongoClient()
+        db = client.get_database(secret.DB)
+        for page in db.get_collection(secret.PAGES).find():
+            update_page_by_name(page['id'])
+
     if arguments['name']:
-        url = URL.format(arguments['<name>'])
-        o = get_facebook_o(url)
-        if o:
-            insert_update_page(o, url, check=True)
-        else:
+        if update_page_by_name(arguments['<name>']) == False:
             print("Not a page")
