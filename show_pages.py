@@ -31,8 +31,6 @@ with open("index.html", "w", encoding="utf-8") as f:
     f.write(str(pages))
 pprint(pages)
 
-
-
 '''
 <!DOCTYPE html>
 <html lang="en">

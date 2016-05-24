@@ -22,7 +22,8 @@ import secret
 import facebook
 import pymongo
 
-URL = "{}?/posts?fields=id,name,limit=100"
+URL = "{}/posts?limit=100"
+URL_IDs = "{}?/?fields=id,name"
 
 
 def get_facebook_o(url):
@@ -35,18 +36,20 @@ def get_facebook_o(url):
     return o
 
 
-def insert_update_posts(posts, url="", check=False):
+def insert_update_posts(input, o_creator_id, url="", check=False):
     client = pymongo.MongoClient()
     db = client.get_database(secret.DB)
     # pages = db.drop_collection('pages')
     posts = db.get_collection(secret.POSTS)
     posts.create_index('id', unique=True)
+
     modified, add = 0, 0
-    for o in posts['data']:
+    for o in input['data']:
         update_rst = posts.update({'id': o['id']},
-                                  {'message': o['message'],
+                                  {'id': o['id'],
+                                   'message': o.get('message', ""),
                                    'created_time': o['created_time'],
-                                   'creator_id': o['id']
+                                   'creator_id': o_creator_id
                                    },
                                   upsert=True)
 
@@ -56,12 +59,8 @@ def insert_update_posts(posts, url="", check=False):
                     modified += 1
                 else:
                     add += 1
+    return add, modified
 
-    print("""Updating page "{}"
-Inserted {} posts, update {} posts.""".format(o['name'], add, modified))
-
-
-# if __name__ == "__main__":
 
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='add_page 1.0')
@@ -72,5 +71,8 @@ if __name__ == '__main__':
     if arguments['name']:
         url = URL.format(arguments['<name>'])
         o = get_facebook_o(url)
+        o_creator = get_facebook_o(URL_IDs.format(arguments['<name>']))
         if o:
-            insert_update_posts(o, url, check=True)
+            add, modified = insert_update_posts(o, o_creator['id'], url, check=True)
+            print("""Updating page "{}"
+            Inserted {} posts, update {} posts.""".format(o_creator['name'], add, modified))

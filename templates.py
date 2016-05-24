@@ -13,7 +13,8 @@ def get_html_templtate(*args, template_parameter="", template=default_template, 
         return templates.get(template_parameter,
                              default_template.format(param=template_parameter, value="{}")).format(*args, **kwargs)
     except KeyError:
-        print("{} created".format(template_parameter))
+        # heppands when args or kwargs is empty
+        print("{} templates created didn't return a template because no args/kwargs.".format(template_parameter))
 
 
 assert get_html_templtate("asd", "sdfdasf") == "asd sdfdasf"
@@ -25,9 +26,6 @@ assert get_html_templtate("3", "sdfdasf", template_parameter="can",
 assert get_html_templtate("4", "4a", template_parameter="b") == "<b>4</b><can>4a</cab>"
 assert get_html_templtate("5", template_parameter="can") == "<sdfdasf>5</sdfdasf>"
 assert get_html_templtate("6") == "6"
-
-
-
 
 if __name__ == '__main__':
     print(get_html_templtate("1", "sdfdasf", template_parameter="b", template="<b>{}</b><can>{}</cab>"))
