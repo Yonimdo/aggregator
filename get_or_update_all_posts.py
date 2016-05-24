@@ -1,4 +1,4 @@
-'''add_page 1.0
+'''add_or_update_all_post 1.0
 
 Usage:
   add_page name <name>
@@ -8,8 +8,8 @@ Usage:
 
 Options:
 
-    add_page is a mongo db class that hold information on wanted pages
-    please hold a mongod service open, and insert url,name
+    add_or_update_all_post is a mongo db class that updates posts from the  wanted page
+    please hold a mongod service open, and insert name
 
   --version     version 1.0
   name      the name of the page (without spaces).
