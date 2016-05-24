@@ -20,22 +20,13 @@ Options:
 from docopt import docopt
 from pprint import pprint
 import secret
-import facebook
+from face_api import get_facebook_o
+
 import pymongo
 import sys
 import re
 
 URL = "{}?fields=about,picture,hometown,fan_count,bio,insights.limit(1),category,name"
-
-
-def get_facebook_o(url):
-    try:
-        graph = facebook.GraphAPI(access_token=secret.APP_TOKEN, version='2.5')
-        o = graph.get_object(
-            url)
-    except facebook.GraphAPIError:
-        o = False
-    return o
 
 
 def insert_update_page(o, url="", check=False):
@@ -78,12 +69,24 @@ def update_page_by_name(name):
     return False
 
 
+def remove_page_by_id(page_id):
+    client = pymongo.MongoClient()
+    db = client.get_database(secret.DB)
+    # pages = db.drop_collection('pages')
+    pages = db.get_collection(secret.PAGES)
+    pages.delete_one({'id': page_id})
+
+
+def reset_db():
+    client = pymongo.MongoClient()
+    db = client.get_database(secret.DB)
+    db.drop_collection(secret.PAGES)
+
+
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='add_page 1.0')
     if arguments['--reset']:
-        client = pymongo.MongoClient()
-        db = client.get_database(secret.DB)
-        db.drop_collection(secret.PAGES)
+        reset_db()
     if arguments['--update-all']:
         client = pymongo.MongoClient()
         db = client.get_database(secret.DB)

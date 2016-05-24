@@ -1,7 +1,7 @@
 '''add_or_update_all_post 1.0
 
 Usage:
-  add_page name <name>
+  add_page name <name> [--limit=100]
   add_page -h | --help
   add_page --version
   add_page --reset
@@ -15,25 +15,15 @@ Options:
   name      the name of the page (without spaces).
 
 '''
-
+from face_api import get_facebook_o
 from docopt import docopt
 from pprint import pprint
 import secret
 import facebook
 import pymongo
 
-URL = "{}/posts?limit=100"
+URL = "{}/posts?limit={}"
 URL_IDs = "{}?/?fields=id,name"
-
-
-def get_facebook_o(url):
-    try:
-        graph = facebook.GraphAPI(access_token=secret.APP_TOKEN, version='2.5')
-        o = graph.get_object(
-            url)
-    except facebook.GraphAPIError:
-        o = False
-    return o
 
 
 def insert_update_posts(input, o_creator_id, url="", check=False):
@@ -62,17 +52,29 @@ def insert_update_posts(input, o_creator_id, url="", check=False):
     return add, modified
 
 
+def update_post_by_id(id, limit=100):
+    add, modified = 0, 0
+    url = URL.format(id, limit)
+    o = get_facebook_o(url)
+    o_creator = get_facebook_o(URL_IDs.format(arguments['<name>']))
+    if o:
+        add, modified = insert_update_posts(o, o_creator['id'], url, check=True)
+    return add, modified
+
+
+def reset_db():
+    client = pymongo.MongoClient()
+    db = client.get_database(secret.DB)
+    db.drop_collection(secret.POSTS)
+
+
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='add_page 1.0')
     if arguments['--reset']:
-        client = pymongo.MongoClient()
-        db = client.get_database(secret.DB)
-        db.drop_collection(secret.PAGES)
+        reset_db()
     if arguments['name']:
-        url = URL.format(arguments['<name>'])
-        o = get_facebook_o(url)
+        limit = arguments['--limit'] if arguments['--limit'] else 100
+        add, modified = update_post_by_id(arguments['<name>'], limit)
         o_creator = get_facebook_o(URL_IDs.format(arguments['<name>']))
-        if o:
-            add, modified = insert_update_posts(o, o_creator['id'], url, check=True)
-            print("""Updating page "{}"
+        print("""Updating page "{}"
             Inserted {} posts, update {} posts.""".format(o_creator['name'], add, modified))
