@@ -23,12 +23,16 @@ get_html_templtate(
     </div>
 ''')
 
-for index, page in enumerate(db.get_collection(secret.PAGES).find()):
-    raw = get_html_templtate(**page, template_parameter="page")
-    pages[page['id']] = raw
 
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(str(pages))
+def get_Pages(as_html=True):
+    pages = {}
+    for index, page in enumerate(db.get_collection(secret.PAGES).find()):
+        raw = get_html_templtate(**page, template_parameter="page") if as_html else page
+        pages[page['id']] = raw
+    return pages
+
+
+pages = get_Pages()
 
 if __name__ == "__main__":
     pprint(pages)

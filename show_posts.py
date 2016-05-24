@@ -37,13 +37,13 @@ get_html_templtate(
 ''')
 
 
-def get_posts(creator_id, limit=100):
+def get_posts(creator_id, limit=100, as_html=True):
     posts = {}
     limit = int(limit)
     for index, post in enumerate(db.get_collection(secret.POSTS).find()):
         if index == limit:
             break
-        raw = get_html_templtate(**post, template_parameter="post")
+        raw = get_html_templtate(**post, template_parameter="post") if as_html else post
         posts[post['id']] = raw
     return posts
 

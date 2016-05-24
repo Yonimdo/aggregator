@@ -16,4 +16,5 @@ def index(name):
     return template('<b>Hello {{name}}</b>!', name=name)
 
 
-run(host='localhost', port=8080)
+def run_server(host='localhost', port=8080):
+    run(host=host, port=port)
