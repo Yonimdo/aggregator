@@ -1,4 +1,4 @@
-'''add_or_update_all_post 1.0
+'''post_manager 1.0
 
 Usage:
   add_page name <name> [--limit=100]

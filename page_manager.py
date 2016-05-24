@@ -1,4 +1,4 @@
-'''add_page 1.0
+'''page_manager 1.0
 
 Usage:
   add_page name <name>
@@ -21,7 +21,7 @@ from docopt import docopt
 from pprint import pprint
 import secret
 from face_api import get_facebook_o
-
+from concurrent import futures
 import pymongo
 import sys
 import re
@@ -75,6 +75,12 @@ def remove_page_by_id(page_id):
     # pages = db.drop_collection('pages')
     pages = db.get_collection(secret.PAGES)
     pages.delete_one({'id': page_id})
+
+
+def update_multi_ids(ids):
+    with futures.ThreadPoolExecutor(max_workers=len(ids)) as executor:
+        for url in ids:
+            executor.submit(update_page_by_name, url)
 
 
 def reset_db():

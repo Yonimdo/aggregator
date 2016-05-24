@@ -5,6 +5,7 @@ Usage:
   social list
   social serve [--port=8000] [--interface=127.0.0.1]
   social update page_id <page_id> [--limit=100]
+  social update
   social remove <page_id>
   social -h | --help
   social --version
@@ -23,9 +24,10 @@ from pprint import pprint
 from docopt import docopt
 from bottle import route, run, template
 import show_pages
-import add_page
+import page_manager
 import agg_server
-import get_or_update_all_posts
+import posts_manager
+import demo_urls
 
 if __name__ == "__main__":
     arguments = docopt(__doc__, version='agg_server 1.0')
@@ -34,16 +36,20 @@ if __name__ == "__main__":
         port = int(arguments['--port']) if arguments['--port'] else 8080
         agg_server.run_server(host=host, port=port)
     if arguments['update']:
-        add_page.update_page_by_name(arguments['<page_id>'])
-        limit = arguments['--limit'] if arguments['--limit'] else 100
-        get_or_update_all_posts.update_post_by_id(arguments['<page_id>'], limit)
+        if arguments['page_id']:
+            page_manager.update_page_by_name(arguments['<page_id>'])
+            limit = arguments['--limit'] if arguments['--limit'] else 100
+            posts_manager.update_post_by_id(arguments['<page_id>'], limit)
+        else:
+            ids = [id for id, page in show_pages.get_Pages(False).items()]
+            demo_urls.update_multi_ids(ids)
     if arguments['add']:
-        add_page.update_page_by_name(arguments['<link>'])
+        page_manager.update_page_by_name(arguments['<link>'])
     if arguments['remove']:
-        add_page.remove_page_by_id(arguments['<page_id>'])
+        page_manager.remove_page_by_id(arguments['<page_id>'])
     if arguments['list']:
         pprint(show_pages.get_Pages(False))
     if arguments['--reset']:
-        add_page.reset_db()
-        get_or_update_all_posts.reset_db()
+        page_manager.reset_db()
+        posts_manager.reset_db()
         pprint(show_pages.get_Pages(False))
