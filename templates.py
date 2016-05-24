@@ -1,6 +1,9 @@
+import re
+
 KEYS = ''
 templates = {}
-default_template = "<{param}>{value}<{param}/>"
+default_template = "<{param}>{value}</{param_end}>"
+match = re.compile(r"^(\w+)(\s)")
 
 
 def get_html_templtate(*args, template_parameter="", template=default_template, **kwargs):
@@ -10,8 +13,12 @@ def get_html_templtate(*args, template_parameter="", template=default_template, 
         if template != default_template:
             templates[template_parameter] = template.replace('\n', ' ')
     try:
+        end = match.search(template_parameter)
+        end = end.group(1) if end else template_parameter
         return templates.get(template_parameter,
-                             default_template.format(param=template_parameter, value="{}")).format(
+                             default_template.format(param=template_parameter,
+                                                     param_end=end
+                                                     , value="{}")).format(
             *args, **kwargs)
     except KeyError:
         # heppands when args or kwargs is empty
@@ -35,3 +42,4 @@ if __name__ == '__main__':
     print(get_html_templtate("4", "4a", template_parameter="b"))
     print(get_html_templtate("5", template_parameter="can"))
     print(get_html_templtate("6"))
+    print(get_html_templtate("7", template_parameter="b class='as'"))
