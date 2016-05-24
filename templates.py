@@ -8,10 +8,11 @@ def get_html_templtate(*args, template_parameter="", template=default_template, 
         return " ".join(args)
     else:
         if template != default_template:
-            templates[template_parameter] = template
+            templates[template_parameter] = template.replace('\n', ' ')
     try:
         return templates.get(template_parameter,
-                             default_template.format(param=template_parameter, value="{}")).format(*args, **kwargs)
+                             default_template.format(param=template_parameter, value="{}")).format(
+            *args, **kwargs)
     except KeyError:
         # heppands when args or kwargs is empty
         print("{} templates created didn't return a template because no args/kwargs.".format(template_parameter))

@@ -47,9 +47,9 @@ def insert_update_page(o, url="", check=False):
                               {'id': o['id'],
                                'likes': o['fan_count'],
                                'category': o['category'],
-                               'about': o['category'],
+                               'about': o['about'],
                                'name': o['name'],
-                               'picture': o['picture'],
+                               'picture': o['picture']['data']['url'],
                                'url': url,
 
                                },
@@ -66,9 +66,6 @@ def insert_update_page(o, url="", check=False):
                 pprint("OK, added id #{} named {} with {} fans. ".format(page['id'], page['name'], page['likes']))
             assert count >= 0
             count -= 1
-
-
-# if __name__ == "__main__":
 
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='add_page 1.0')
