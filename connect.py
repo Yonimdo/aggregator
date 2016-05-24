@@ -1,12 +1,12 @@
 import requests
 
-import secrets
+import secret
 
 URL = "https://graph.facebook.com/oauth/access_token"
 
 r = requests.get(URL, {
-    'client_id': secrets.APP_ID,
-    'client_secret': secrets.APP_SECRET,
+    'client_id': secret.APP_ID,
+    'client_secret': secret.APP_SECRET,
     'grant_type': 'client_credentials',
 })
 
