@@ -25,6 +25,8 @@ def get_html_templtate(*args, template_parameter="", template=default_template, 
         print("{} templates created didn't return a template because no args/kwargs.".format(template_parameter))
 
 
+# fast assertion area (when prod should cp to Unit test?)
+# -------------------------------------------------------
 assert get_html_templtate("asd", "sdfdasf") == "asd sdfdasf"
 assert get_html_templtate("1", "sdfdasf", template_parameter="b",
                           template="<b>{}</b><can>{}</cab>") == "<b>1</b><can>sdfdasf</cab>"
@@ -34,6 +36,8 @@ assert get_html_templtate("3", "sdfdasf", template_parameter="can",
 assert get_html_templtate("4", "4a", template_parameter="b") == "<b>4</b><can>4a</cab>"
 assert get_html_templtate("5", template_parameter="can") == "<sdfdasf>5</sdfdasf>"
 assert get_html_templtate("6") == "6"
+# ---------------------------------------------------------------------
+templates = {}  # #cleans the templates area after assertion..(my bad...)
 
 if __name__ == '__main__':
     print(get_html_templtate("1", "sdfdasf", template_parameter="b", template="<b>{}</b><can>{}</cab>"))
@@ -43,3 +47,4 @@ if __name__ == '__main__':
     print(get_html_templtate("5", template_parameter="can"))
     print(get_html_templtate("6"))
     print(get_html_templtate("7", template_parameter="b class='as'"))
+    templates = {}

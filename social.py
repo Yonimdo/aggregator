@@ -21,13 +21,13 @@ Options:
 
 '''
 from pprint import pprint
+
 from docopt import docopt
-from bottle import route, run, template
-import show_pages
+
 import page_manager
-import agg_server
 import posts_manager
-import demo_urls
+from service import agg_server
+from testing import demo_urls
 
 if __name__ == "__main__":
     arguments = docopt(__doc__, version='agg_server 1.0')
@@ -41,15 +41,15 @@ if __name__ == "__main__":
             limit = arguments['--limit'] if arguments['--limit'] else 100
             posts_manager.update_post_by_id(arguments['<page_id>'], limit)
         else:
-            ids = [id for id, page in show_pages.get_Pages(False).items()]
+            ids = [id for id, page in page_manager.get_Pages(False).items()]
             demo_urls.update_multi_ids(ids)
     if arguments['add']:
         page_manager.update_page_by_name(arguments['<link>'])
     if arguments['remove']:
         page_manager.remove_page_by_id(arguments['<page_id>'])
     if arguments['list']:
-        pprint(show_pages.get_Pages(False))
+        pprint(page_manager.get_Pages(False))
     if arguments['--reset']:
         page_manager.reset_db()
         posts_manager.reset_db()
-        pprint(show_pages.get_Pages(False))
+        pprint(page_manager.get_Pages(False))
