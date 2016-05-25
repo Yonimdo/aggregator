@@ -1,13 +1,13 @@
 from bottle import route, run, template
-import show_pages
+import page_manager
 
 
 @route('/')
 def index():
     print("index")
     html = ""
-    for page_id in show_pages.pages:
-        html += str(show_pages.pages[page_id])
+    for page in page_manager.get_Pages():
+        html += str(page)
     return template('<html><head></head><body>{{!body}}</body></html>!', body=html)
 
 
