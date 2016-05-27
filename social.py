@@ -42,7 +42,7 @@ if __name__ == "__main__":
             posts_manager.update_post_by_id(arguments['<page_id>'], limit)
         else:
             ids = [id for id, page in show_pages.get_Pages(False).items()]
-            demo_urls.update_multi_ids(ids)
+            page_manager.update_multi_ids(ids)
     if arguments['add']:
         page_manager.update_page_by_name(arguments['<link>'])
     if arguments['remove']:
