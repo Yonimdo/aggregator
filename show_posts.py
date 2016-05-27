@@ -26,7 +26,7 @@ db = client.get_database(secret.DB)
 get_html_templtate(
     template_parameter="post",
     template='''
- <div class="col-sm-6 col-md-3">
+ <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
         <div class="thumbnail">
             <div class="caption">
                 <h6>{created_time}</h6>
@@ -37,6 +37,7 @@ get_html_templtate(
 ''')
 
 
+# REMOVE 'creator_id' from: def get_posts(creator_id, limit=100, as_html=True): ??
 def get_posts(creator_id, limit=100, as_html=True):
     posts = {}
     limit = int(limit)
@@ -46,12 +47,6 @@ def get_posts(creator_id, limit=100, as_html=True):
         raw = get_html_templtate(**post, template_parameter="post") if as_html else post
         posts[post['id']] = raw
     return posts
-
-
-# with open("index.html", "w", encoding="utf-8") as f:
-#     f.write(str(pages))
-
-
 
 
 if __name__ == '__main__':

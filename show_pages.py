@@ -11,7 +11,7 @@ pages = {}
 get_html_templtate(
     template_parameter="page",
     template='''
- <div class="col-sm-6 col-md-3">
+ <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
         <div class="thumbnail">
             <img src="{picture}" alt="{name}">
             <div class="caption">

@@ -1,10 +1,10 @@
-'''post_manager 1.0
+'''posts_manager 1.0
 
 Usage:
-  add_page name <name> [--limit=100]
-  add_page -h | --help
-  add_page --version
-  add_page --reset
+  posts_manager name <name> [--limit=100]
+  posts_manager -h | --help
+  posts_manager --version
+  posts_manager --reset
 
 Options:
 
