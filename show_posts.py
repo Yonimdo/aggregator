@@ -17,8 +17,9 @@ Options:
 from docopt import docopt
 import pymongo
 import secret
-from templates import get_html_templtate
+from templates import get_html_templtate, templates
 from pprint import pprint
+from dal import mdb_connect
 
 client = pymongo.MongoClient()
 db = client.get_database(secret.DB)
@@ -36,6 +37,15 @@ get_html_templtate(
     </div>
 ''')
 
+# def get_posts(creator_id, limit=100, as_html=True):
+#     posts = {}
+#     limit = int(limit)
+#     for index, post in enumerate(mdb_connect.get_collection(secret.POSTS, {"creator_id": creator_id})):
+#         if index == limit:
+#             break
+#         raw = templates.get_html_templtate(**post, template_parameter="post") if as_html else post
+#         posts[post['id']] = raw
+#     return posts
 
 # REMOVE 'creator_id' from: def get_posts(creator_id, limit=100, as_html=True): ??
 def get_posts(creator_id, limit=100, as_html=True):

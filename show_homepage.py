@@ -3,7 +3,6 @@ from pprint import pprint
 import show_pages
 import show_posts
 from bottle import route, run, template
-import agg_server
 
 pages = show_pages.get_Pages(True)
 
@@ -16,8 +15,8 @@ def index():
         html += '''<div class="row">'''
         html += str(show_pages.pages[page_id])
         for post in posts:
-            html += '''<h2>test paragraph test text checking UI.</h2>'''
-        html += '''</div>'''
+            html += posts[post]
+        html += '''<div class="clearfix visible-xs"></div></div>'''
 
     return template('''<html>
                         <head>
@@ -41,6 +40,11 @@ def css():
     # with open("css/temp.css") as f:
     #     return f.read()
 
+
+def run_server(host, port):
+    run(host='localhost', port=8080)
+
+
 if __name__ == "__main__":
     index()
-    agg_server.run_server('localhost', 8080)
+    run_server('localhost', 8080)

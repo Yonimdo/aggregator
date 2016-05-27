@@ -1,19 +1,11 @@
 '''posts_manager 1.0
 
 Usage:
-<<<<<<< HEAD
   posts_manager name <name> [--limit=100]
   posts_manager -h | --help
   posts_manager --version
   posts_manager --reset
 
-=======
-  add_page name <name> [--limit=100]
-  add_page -h | --help
-  add_page --version
-  add_page --reset
-  add_page print
->>>>>>> e1d66cd54f5c42bd1be389c5323efa9085c923c3
 Options:
 
     add_or_update_all_post is a mongo db class that updates posts from the  wanted page
@@ -25,8 +17,9 @@ Options:
 '''
 from pprint import pprint
 from docopt import docopt
-import secret
+
 import core
+import secret
 from dal import mdb_connect, fb_connect
 import templates
 
@@ -99,7 +92,7 @@ if __name__ == '__main__':
         print("""Updating page "{}"
             Inserted {} posts, update {} posts.""".format(o_creator['name'], add, modified))
     arguments = docopt(__doc__, version='show_posts 1.0')
-    if arguments['print']:
-        posts = get_posts(arguments['id'], limit=arguments['<limit>']) if arguments['limit'] else get_posts(
-            arguments['id'])
-        pprint(posts)
+    # if arguments['print']:
+    #     posts = get_posts(arguments['id'], limit=arguments['<limit>']) if arguments['limit'] else get_posts(
+    #         arguments['id'])
+    #     pprint(posts)
