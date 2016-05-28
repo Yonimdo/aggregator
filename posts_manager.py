@@ -49,7 +49,7 @@ def insert_update_posts(input, o_creator_id, url="", check=False):
     core.do_jobs(jobs)
     if (check):  # to do check jobs
         pass
-        return add, modified
+    return add, modified
 
 
 def update_post_by_id(id, limit=100):
@@ -92,7 +92,7 @@ if __name__ == '__main__':
         print("""Updating page "{}"
             Inserted {} posts, update {} posts.""".format(o_creator['name'], add, modified))
     arguments = docopt(__doc__, version='show_posts 1.0')
-    # if arguments['print']:
-    #     posts = get_posts(arguments['id'], limit=arguments['<limit>']) if arguments['limit'] else get_posts(
-    #         arguments['id'])
-    #     pprint(posts)
+    if arguments['print']:
+        posts = get_posts(arguments['id'], limit=arguments['<limit>']) if arguments['limit'] else get_posts(
+            arguments['id'])
+        pprint(posts)

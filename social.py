@@ -26,6 +26,7 @@ from docopt import docopt
 
 import page_manager
 import posts_manager
+import show_pages
 from service import agg_server
 from testing import demo_urls
 
@@ -41,13 +42,10 @@ if __name__ == "__main__":
             limit = arguments['--limit'] if arguments['--limit'] else 100
             posts_manager.update_post_by_id(arguments['<page_id>'], limit)
         else:
-<<<<<<< HEAD
             ids = [id for id, page in show_pages.get_Pages(False).items()]
             page_manager.update_multi_ids(ids)
-=======
             ids = [id for id, page in page_manager.get_Pages(False).items()]
             demo_urls.update_multi_ids(ids)
->>>>>>> e1d66cd54f5c42bd1be389c5323efa9085c923c3
     if arguments['add']:
         page_manager.update_page_by_name(arguments['<link>'])
     if arguments['remove']:

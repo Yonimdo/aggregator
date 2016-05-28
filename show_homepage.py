@@ -1,21 +1,27 @@
 from pprint import pprint
 
-import show_pages
-import show_posts
-from bottle import route, run, template
+import page_manager
+import posts_manager
 
-pages = show_pages.get_Pages(True)
+from bottle import route, run, template
+from service import agg_server
+
+pages = page_manager.get_Pages(True)
 
 
 @route('/')
 def index():
     html = ""
     for page_id in pages:
-        posts = show_posts.get_posts(page_id, 3, True)
+        print("page id: {}".format(page_id))
+        posts = posts_manager.get_posts(page_id, 3, True)
         html += '''<div class="row">'''
-        html += str(show_pages.pages[page_id])
+        html += str(pages[page_id])
+        pprint("posts length = {}".format(len(posts)))
         for post in posts:
-            html += posts[post]
+            html += posts[post] # posts is EMPTY!?
+        for i in range(3): # dummy line to show text where a post should be
+            html += '''<div><h3>This is where a post should be. However, no posts are retrieved by page_id. (??????)</h3></div>'''
         html += '''<div class="clearfix visible-xs"></div></div>'''
 
     return template('''<html>
@@ -41,10 +47,7 @@ def css():
     #     return f.read()
 
 
-def run_server(host, port):
-    run(host='localhost', port=8080)
-
 
 if __name__ == "__main__":
     index()
-    run_server('localhost', 8080)
+    agg_server.run_server('localhost', 8080)

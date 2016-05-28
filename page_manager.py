@@ -68,7 +68,7 @@ def update_page_by_name(name):
     url = URL.format(name)
     o = fb_connect.get_facebook_o(url)
     if o:
-        insert_update_page(o, url, check=True)
+        insert_update_page(o, url, check=False)
         return True
     return False
 
