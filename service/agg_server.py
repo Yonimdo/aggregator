@@ -6,7 +6,7 @@ import page_manager
 def index():
     print("index")
     html = ""
-    for page in page_manager.get_Pages():
+    for page in page_manager.get_Pages().items():
         html += str(page)
     return template('<html><head></head><body>{{!body}}</body></html>!', body=html)
 

@@ -8,4 +8,4 @@ def do_jobs(job, *args, **kwargs):
         job = [(job, args, kwargs), ]
     with futures.ThreadPoolExecutor(max_workers=len(job)) as executor:
         for function in job:
-            executor.submit(job[0], job[1], job[2])
+            executor.submit(function[0], function[1], function[2])

@@ -21,8 +21,6 @@ from docopt import docopt
 from pprint import pprint
 import secret
 from dal import mdb_connect, fb_connect
-from concurrent import futures
-import pymongo
 import sys
 import re
 import core
@@ -89,7 +87,7 @@ def reset_db():
 def get_Pages(as_html=True):
     pages = {}
     for index, page in enumerate(mdb_connect.get_collection(secret.PAGES)):
-        raw = templates.get_html_templtate(**page, template_parameter="page") if as_html else page
+        raw = templates.get_html_templtate( template_parameter="page",**page) if as_html else page
         pages[page['id']] = raw
     return pages
 
@@ -99,10 +97,8 @@ if __name__ == '__main__':
     if arguments['--reset']:
         reset_db()
     if arguments['--update-all']:
-        client = pymongo.MongoClient()
-        db = client.get_database(secret.DB)
-        for page in db.get_collection(secret.PAGES).find():
-            update_page_by_name(page['id'])
+        for page in get_Pages(False):
+            update_page_by_name(page[0])
     if arguments["print"]:
         pprint(get_Pages())
     if arguments['name']:

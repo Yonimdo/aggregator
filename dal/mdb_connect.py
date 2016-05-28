@@ -30,7 +30,7 @@ def get_collection(collection_name, find_param=None):
     client = pymongo.MongoClient()
     db = client.get_database(secret.DB)
     if find_param != None:
-        return db.get_collection(collection_name).find(find_param)
+        yield db.get_collection(collection_name).find(find_param)
     else:
         for element in db.get_collection(collection_name).find():
             yield element
