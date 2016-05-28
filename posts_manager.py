@@ -1,11 +1,11 @@
-'''post_manager 1.0
+'''posts_manager 1.0
 
 Usage:
-  add_page name <name> [--limit=100]
-  add_page -h | --help
-  add_page --version
-  add_page --reset
-  add_page print
+  posts_manager name <name> [--limit=100]
+  posts_manager -h | --help
+  posts_manager --version
+  posts_manager --reset
+
 Options:
 
     add_or_update_all_post is a mongo db class that updates posts from the  wanted page
@@ -17,8 +17,9 @@ Options:
 '''
 from pprint import pprint
 from docopt import docopt
-import secret
+
 import core
+import secret
 from dal import mdb_connect, fb_connect
 import templates
 
@@ -48,7 +49,7 @@ def insert_update_posts(input, o_creator_id, url="", check=False):
     core.do_jobs(jobs)
     if (check):  # to do check jobs
         pass
-        return add, modified
+    return add, modified
 
 
 def update_post_by_id(id, limit=100):
